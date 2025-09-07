@@ -106,10 +106,10 @@
           const startX = rect.left + rect.width / 2;
           const startY = rect.bottom;
 
-          for (let i = 0; i < 5; i++) {
+          for (let i = 0; i < 15; i++) {
             setTimeout(() => {
               if (window.spawnBalloon) window.spawnBalloon(startX, startY);
-            }, i * 100);
+            }, i * 80);
           }
         });
       });
