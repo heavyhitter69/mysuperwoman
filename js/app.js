@@ -7,6 +7,7 @@
   const correct = (window.__PASSCODE__ || '').toString();
 
   function spawnHeart(x, y, size, duration) {
+    if (!hearts) return;
     const el = document.createElement('div');
     el.className = 'heart';
     el.style.left = x + 'px';
@@ -48,17 +49,30 @@
 
   if (form && input) {
     let isAlertActive = false;
+    let heartInterval = null;
+
+    const startHeartInterval = () => {
+      if (heartInterval) clearInterval(heartInterval);
+      heartInterval = setInterval(() => {
+        const x = Math.random() * window.innerWidth;
+        const y = window.innerHeight - 20;
+        spawnHeart(x, y, 10 + Math.random() * 12, 2500 + Math.random() * 1500);
+      }, 400);
+    };
+
     form.addEventListener('submit', function (e) {
       e.preventDefault();
-      if (isAlertActive) return; // Prevent spamming while alert is active
+      if (isAlertActive) return;
 
       const value = (input.value || '').trim();
       if (value === correct) {
+        if (heartInterval) clearInterval(heartInterval);
         celebrateThenEnter();
       } else {
         isAlertActive = true;
+        if (heartInterval) clearInterval(heartInterval);
         document.body.classList.add('intruder-alert-active');
-        if (alertEl) alertEl.style.display = 'block';
+        if (alertEl) alertEl.style.display = 'flex';
 
         input.classList.add('shake');
         input.value = '';
@@ -68,16 +82,12 @@
           if (alertEl) alertEl.style.display = 'none';
           input.classList.remove('shake');
           isAlertActive = false;
-        }, 3000);
+          startHeartInterval(); // Restart hearts
+        }, 5000); // Increased duration
       }
     });
 
-    // Ambient floating hearts
-    setInterval(() => {
-      const x = Math.random() * window.innerWidth;
-      const y = window.innerHeight - 20;
-      spawnHeart(x, y, 10 + Math.random() * 12, 2500 + Math.random() * 1500);
-    }, 400);
+    startHeartInterval(); // Initial start
   }
 })();
 
