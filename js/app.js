@@ -149,7 +149,7 @@ function spawnBalloon(x, y) {
 
   el.animate([
     { transform: 'translate(-50%, 0) scale(0)', opacity: 1 },
-    { transform: `translate(${driftX}px, ${driftY}px) scale(1.2)`, opacity: 0 }
+    { transform: `translate(calc(-50% + ${driftX}px), ${driftY}px) scale(1.2)`, opacity: 0 }
   ], {
     duration: 3000 + Math.random() * 1500,
     easing: 'ease-out',

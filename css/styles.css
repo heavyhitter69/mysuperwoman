@@ -226,7 +226,7 @@ h2 { color: var(--brown-500); }
 }
 
 .balloon {
-  position: absolute;
+  position: fixed;
   width: 20px;
   height: 25px;
   background-color: var(--blue-600);
