@@ -3,6 +3,7 @@
   const form = document.getElementById('gateForm');
   const input = document.getElementById('codeInput');
   const hearts = document.getElementById('hearts');
+  const alertEl = document.getElementById('intruder-alert');
   const correct = (window.__PASSCODE__ || '').toString();
 
   function spawnHeart(x, y, size, duration) {
@@ -46,17 +47,28 @@
   }
 
   if (form && input) {
+    let isAlertActive = false;
     form.addEventListener('submit', function (e) {
       e.preventDefault();
+      if (isAlertActive) return; // Prevent spamming while alert is active
+
       const value = (input.value || '').trim();
       if (value === correct) {
         celebrateThenEnter();
       } else {
+        isAlertActive = true;
+        document.body.classList.add('intruder-alert-active');
+        if (alertEl) alertEl.style.display = 'block';
+
         input.classList.add('shake');
-        input.style.borderColor = '#f06292';
-        setTimeout(() => input.classList.remove('shake'), 420);
-        // small heart to comfort
-        spawnHeart(input.getBoundingClientRect().left, input.getBoundingClientRect().top, 16, 1200);
+        input.value = '';
+
+        setTimeout(() => {
+          document.body.classList.remove('intruder-alert-active');
+          if (alertEl) alertEl.style.display = 'none';
+          input.classList.remove('shake');
+          isAlertActive = false;
+        }, 3000);
       }
     });
 
