@@ -245,3 +245,30 @@ h2 { color: var(--brown-500); }
   border-right: 6px solid transparent;
   border-top: 8px solid var(--blue-600);
 }
+
+/* Intruder Alert styles */
+body.intruder-alert-active::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-color: hsla(0, 100%, 50%, 0.3);
+  z-index: 100;
+  pointer-events: none;
+}
+
+#intruder-alert {
+  color: hsl(0, 100%, 85%);
+  text-shadow: 0 0 10px hsl(0, 100%, 50%);
+  animation: pulse-red 1s infinite ease-in-out;
+}
+
+@keyframes pulse-red {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.7;
+  }
+}
