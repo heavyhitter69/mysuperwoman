@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>For My Grad Queen</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css" />
+    <style>
+      /* Small helper only for this page */
+      .lead { font-size: clamp(1rem, 2.5vw, 1.15rem); opacity: .9; }
+      .accent { color: var(--pink-400); font-weight: 700; }
+      .grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap: 1rem; }
+      .gallery img, .gallery video { width: 100%; height: 100%; object-fit: cover; border-radius: 14px; }
+      .tag { display:inline-block; padding:.35rem .65rem; border-radius:999px; background:var(--ash-100); color:var(--brown-500); font-weight:600; margin:.15rem .25rem 0 0; }
+    </style>
+  </head>
+  <body>
+    <header class="hero">
+      <div class="overlay"></div>
+      <div class="headline container">
+        <h1 class="script" style="margin-bottom:.25rem">Congratulations, Babe!</h1>
+        <p class="lead">I couldn't get you a cake to celebrate your finals, so I built you this little corner of the web. I hope it makes you smile as much as you make me smile.</p>
+      </div>
+      <video id="heroVideo" autoplay muted playsinline loop style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; filter:brightness(.65) saturate(1.08);"></video>
+    </header>
+
+    <section class="container">
+      <div class="card">
+        <h2 style="margin-top:0">To the woman who just finished strong</h2>
+        <p>Brave, brilliant, beautiful. You did it. Here's a tiny scrapbook of memories, colors you love, and words from my heart. Thank you for being you.</p>
+      </div>
+    </section>
+
+    <section class="container gallery">
+      <h2 style="margin:0 0 .75rem 0">Some moments I adore</h2>
+      <div class="grid" id="galleryGrid"></div>
+    </section>
+
+    <footer>
+      <p class="script" style="margin:.25rem 0 0 0">Congratulations, babe</p>
+      <div>With all my love.</div>
+    </footer>
+
+    <button id="toTop" class="to-top" aria-label="Scroll to top">
+      <span class="icon" aria-hidden="true"></span>
+    </button>
+
+    <script>
+      // Use your video from /videos (owusu_vid.*) with fallbacks
+      const heroVideo = document.getElementById('heroVideo');
+      const preferredSources = [
+        'video/owusu_vid.mp4',
+        'video/owusu_vid.webm',
+        'video/owusu_vid.mov',
+        'video/hero.mp4',
+        'video/hero.webm'
+      ];
+      preferredSources.forEach(src => {
+        const s = document.createElement('source');
+        s.src = src; heroVideo.appendChild(s);
+      });
+
+      // Populate gallery from /img folder; save the photos with these names
+      // Place all in site/img/
+      const galleryFiles = [
+        'front_pose_chin.jpeg',
+        'peace_smile.jpeg',
+        'peace_side.jpeg',
+        'front_smile.jpeg',
+        'looking_down.jpeg',
+        'hand_on_hip.jpeg',
+        'laughing_garden.jpeg',
+        'cafe_profile1.jpeg',
+        'cafe_profile2.jpeg',
+        'cafe_phone_smile.jpeg',
+        'cafe_chin_smile.jpeg',
+        'cafe_talk.jpeg',
+        'cafe_owusu.jpeg'
+      ];
+      const grid = document.getElementById('galleryGrid');
+      function addCard(url) {
+        const wrap = document.createElement('div');
+        const img = document.createElement('img');
+        img.loading = 'lazy';
+        img.src = url;
+        wrap.appendChild(img);
+        grid.appendChild(wrap);
+      }
+      galleryFiles.forEach(name => addCard('img/' + name));
+
+      // Captions for images (same order as galleryFiles)
+      window.galleryCaptions = [
+        'My favorite pose: confidence and grace.',
+        'Joy that lights up the park.',
+        'Peace signs and peaceful heart.',
+        'That smile that melts me.',
+        'Lost in thought, found by love.',
+        'Power stance. Final-boss energy.',
+        'A laugh I could listen to forever.',
+        'Focused and fabulous.',
+        'Eyes that see the best in me.',
+        'Happy texts and brighter days.',
+        'The cutest chin-on-hands ever.',
+        'Let’s talk about our future.',
+        'A candid I never want to forget.'
+      ];
+    </script>
+    <script src="js/app.js"></script>
+  </body>
+  </html>
+
+

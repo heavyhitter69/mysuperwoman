@@ -1,0 +1,120 @@
+// Landing page behavior: validate code, animate hearts, transition
+(function () {
+  const form = document.getElementById('gateForm');
+  const input = document.getElementById('codeInput');
+  const hearts = document.getElementById('hearts');
+  const correct = (window.__PASSCODE__ || '').toString();
+
+  function spawnHeart(x, y, size, duration) {
+    const el = document.createElement('div');
+    el.className = 'heart';
+    el.style.left = x + 'px';
+    el.style.top = y + 'px';
+    el.style.width = size + 'px';
+    el.style.height = size + 'px';
+    const driftX = (Math.random() * 2 - 1) * 120;
+    const driftY = -window.innerHeight - Math.random() * 200;
+    el.animate([
+      { transform: 'translate(0, 0) rotate(45deg)', opacity: 1 },
+      { transform: `translate(${driftX}px, ${driftY}px) rotate(45deg)`, opacity: 0 }
+    ], { duration, easing: 'cubic-bezier(.22,.61,.36,1)', fill: 'forwards' });
+    hearts.appendChild(el);
+    setTimeout(() => el.remove(), duration + 50);
+  }
+
+  function burstHearts(centerX, centerY) {
+    const count = 42;
+    for (let i = 0; i < count; i++) {
+      const angle = (i / count) * Math.PI * 2;
+      const radius = 40 + Math.random() * 60;
+      const x = centerX + Math.cos(angle) * radius;
+      const y = centerY + Math.sin(angle) * radius;
+      spawnHeart(x, y, 14 + Math.random() * 14, 1600 + Math.random() * 1200);
+    }
+  }
+
+  function celebrateThenEnter() {
+    const midX = window.innerWidth / 2;
+    const midY = window.innerHeight / 2;
+    burstHearts(midX, midY);
+    const overlay = document.createElement('div');
+    overlay.className = 'overlay explode';
+    document.body.appendChild(overlay);
+    setTimeout(() => {
+      window.location.href = 'main.html';
+    }, 1000);
+  }
+
+  if (form && input) {
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const value = (input.value || '').trim();
+      if (value === correct) {
+        celebrateThenEnter();
+      } else {
+        input.classList.add('shake');
+        input.style.borderColor = '#f06292';
+        setTimeout(() => input.classList.remove('shake'), 420);
+        // small heart to comfort
+        spawnHeart(input.getBoundingClientRect().left, input.getBoundingClientRect().top, 16, 1200);
+      }
+    });
+
+    // Ambient floating hearts
+    setInterval(() => {
+      const x = Math.random() * window.innerWidth;
+      const y = window.innerHeight - 20;
+      spawnHeart(x, y, 10 + Math.random() * 12, 2500 + Math.random() * 1500);
+    }, 400);
+  }
+})();
+
+// Main page enhancements
+(function () {
+  const grid = document.getElementById('galleryGrid');
+  const toTop = document.getElementById('toTop');
+  if (!grid && !toTop) return;
+
+  // Show/hide to-top button
+  if (toTop) {
+    const onScroll = () => {
+      if (window.scrollY > 300) toTop.classList.add('visible'); else toTop.classList.remove('visible');
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    toTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  }
+
+  // Add captions if data-captions exists on window
+  if (grid && Array.isArray(window.galleryCaptions)) {
+    const cards = grid.children;
+    for (let i = 0; i < cards.length; i++) {
+      const caption = document.createElement('div');
+      caption.className = 'caption';
+      caption.textContent = window.galleryCaptions[i] || '';
+      cards[i].appendChild(caption);
+    }
+  }
+
+  // Ambient floating hearts on main page
+  const spawnAmbient = () => {
+    const el = document.createElement('div');
+    el.className = 'heart ambient-heart';
+    const size = 10 + Math.random() * 16;
+    el.style.width = size + 'px';
+    el.style.height = size + 'px';
+    el.style.left = Math.random() * window.innerWidth + 'px';
+    el.style.top = window.innerHeight + 'px';
+    document.body.appendChild(el);
+    const driftX = (Math.random() * 2 - 1) * 80;
+    const driftY = -window.innerHeight - 200 - Math.random() * 200;
+    el.animate([
+      { transform: 'translate(0,0) rotate(45deg)', opacity: .25 },
+      { transform: `translate(${driftX}px, ${driftY}px) rotate(45deg)`, opacity: 0 }
+    ], { duration: 6000 + Math.random() * 4000, easing: 'ease-out', fill: 'forwards' });
+    setTimeout(() => el.remove(), 11000);
+  };
+  setInterval(spawnAmbient, 900);
+})();
+
+
