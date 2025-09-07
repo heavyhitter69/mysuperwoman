@@ -260,6 +260,10 @@ body.intruder-alert-active::before {
   color: hsl(0, 100%, 85%);
   text-shadow: 0 0 10px hsl(0, 100%, 50%);
   animation: pulse-red 1s infinite ease-in-out;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 @keyframes pulse-red {
