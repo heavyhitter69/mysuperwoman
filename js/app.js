@@ -115,6 +115,22 @@
     setTimeout(() => el.remove(), 11000);
   };
   setInterval(spawnAmbient, 900);
+
+  // Fade-in elements on scroll
+  try {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.fade-in-element').forEach(el => observer.observe(el));
+  } catch(e) {
+    // Fallback for older browsers
+    document.querySelectorAll('.fade-in-element').forEach(el => el.classList.add('is-visible'));
+  }
 })();
 
 
