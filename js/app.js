@@ -133,4 +133,30 @@
   }
 })();
 
+// Balloon animation for gallery clicks
+function spawnBalloon(x, y) {
+  const el = document.createElement('div');
+  el.className = 'balloon';
+  // Use the #hearts container so balloons appear under the overlay
+  const container = document.getElementById('hearts') || document.body;
+  container.appendChild(el);
+
+  el.style.left = x + 'px';
+  el.style.top = y + 'px';
+
+  const driftX = (Math.random() - 0.5) * 150;
+  const driftY = -window.innerHeight - Math.random() * 100 - 150;
+
+  el.animate([
+    { transform: 'translate(-50%, 0) scale(0)', opacity: 1 },
+    { transform: `translate(${driftX}px, ${driftY}px) scale(1.2)`, opacity: 0 }
+  ], {
+    duration: 3000 + Math.random() * 1500,
+    easing: 'ease-out',
+    fill: 'forwards'
+  });
+
+  setTimeout(() => el.remove(), 5000);
+}
+window.spawnBalloon = spawnBalloon;
 

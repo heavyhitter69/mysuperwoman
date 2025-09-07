@@ -93,6 +93,27 @@
       }
       galleryFiles.forEach(name => addCard('img/' + name));
 
+      // Add click listener for balloon animation
+      const galleryItems = document.querySelectorAll('.gallery .grid > div');
+      galleryItems.forEach(item => {
+        item.addEventListener('click', () => {
+          // Pop out effect
+          item.classList.add('image-tapped');
+          setTimeout(() => item.classList.remove('image-tapped'), 400);
+
+          // Balloon burst
+          const rect = item.getBoundingClientRect();
+          const startX = rect.left + rect.width / 2;
+          const startY = rect.bottom;
+
+          for (let i = 0; i < 5; i++) {
+            setTimeout(() => {
+              if (window.spawnBalloon) window.spawnBalloon(startX, startY);
+            }, i * 100);
+          }
+        });
+      });
+
       // Captions for images (same order as galleryFiles)
       window.galleryCaptions = [
         'You are my queen, always and forever.',
